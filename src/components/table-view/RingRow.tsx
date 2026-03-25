@@ -10,8 +10,8 @@ interface RingRowProps {
 export function RingRow({ ring }: RingRowProps) {
   const toggleRingExpanded = useDocumentStore((state) => state.toggleRingExpanded);
 
-  const leftCells = ring.index === 0 ? ring.cells : ring.cells.slice(0, ring.cellCount / 2);
-  const rightCells = ring.index === 0 ? [] : ring.cells.slice(ring.cellCount / 2);
+  const leftCells = ring.index === 0 ? ring.cells : ring.cells.slice(ring.cellCount / 2);
+  const rightCells = ring.index === 0 ? [] : ring.cells.slice(0, ring.cellCount / 2);
   const compact = ring.cellCount >= 8;
 
   return (

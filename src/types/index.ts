@@ -21,6 +21,11 @@ export interface CellStyle {
   verticalAlign: 'top' | 'middle' | 'bottom';
   borderColor: string;
   borderWidth: number;
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
+  rotation: number;
+  imageScale: number;
 }
 
 export interface Cell {

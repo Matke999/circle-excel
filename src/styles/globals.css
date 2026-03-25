@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.cell-editor .ProseMirror {
+  outline: none;
+  min-height: 40px;
+  padding: 4px;
+  width: 100%;
+  height: 100%;
+}
+
+.cell-editor .ProseMirror p {
+  margin: 0;
+}
+
+.ring-segment {
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.ring-segment:hover {
+  filter: brightness(0.9);
+}
+
+.ring-segment.selected {
+  filter: brightness(0.8);
+}

@@ -18,6 +18,10 @@ export function CenterCell({ cell, radius, cx, cy, onHover }: CenterCellProps) {
     setSelection(0, 0);
   };
 
+  const rotation = cell.style.rotation ?? 0;
+  const imageScale = cell.style.imageScale ?? 1;
+  const contentSize = radius * 1.4;
+
   return (
     <g>
       <circle
@@ -35,8 +39,8 @@ export function CenterCell({ cell, radius, cx, cy, onHover }: CenterCellProps) {
       <foreignObject
         x={cx - radius * 0.7}
         y={cy - radius * 0.7}
-        width={radius * 1.4}
-        height={radius * 1.4}
+        width={contentSize}
+        height={contentSize}
         className="pointer-events-none"
       >
         <div
@@ -48,13 +52,27 @@ export function CenterCell({ cell, radius, cx, cy, onHover }: CenterCellProps) {
             justifyContent: 'center',
             overflow: 'hidden',
             fontFamily: cell.style.fontFamily,
-            fontSize: Math.min(cell.style.fontSize, radius * 0.3),
+            fontSize: cell.style.fontSize,
             color: cell.style.textColor,
             textAlign: 'center',
             padding: '4px',
+            fontWeight: cell.style.bold ? 'bold' : 'normal',
+            fontStyle: cell.style.italic ? 'italic' : 'normal',
+            textDecoration: cell.style.underline ? 'underline' : 'none',
+            transform: rotation ? `rotate(${rotation}deg)` : undefined,
           }}
         >
-          <div dangerouslySetInnerHTML={{ __html: cell.content.html || '' }} />
+          <div
+            dangerouslySetInnerHTML={{ __html: cell.content.html || '' }}
+            style={{
+              overflow: 'hidden',
+              maxWidth: contentSize,
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+            }}
+            className={imageScale !== 1 ? 'scaled-images' : ''}
+            data-image-scale={imageScale}
+          />
         </div>
       </foreignObject>
     </g>

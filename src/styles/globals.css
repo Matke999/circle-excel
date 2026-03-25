@@ -36,3 +36,18 @@ html, body, #root {
 .ring-segment.selected {
   filter: brightness(0.8);
 }
+
+/* Image scaling support via data attribute */
+.scaled-images img,
+[data-image-scale] img {
+  transition: transform 0.15s ease;
+}
+
+.cell-card {
+  overflow: visible;
+}
+
+.cell-card > div {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

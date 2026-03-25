@@ -42,9 +42,24 @@ export function getArcBoundingBox(data: ArcData): {
   };
 }
 
-export function estimateContentHeight(cell: { content: { plainText: string } }): number {
-  const lines = Math.ceil(cell.content.plainText.length / 20) || 1;
-  return Math.max(40, lines * 20 + 16);
+export function estimateContentHeight(cell: { content: { plainText: string; images?: { height: number }[] }; style?: { fontSize?: number; imageScale?: number } }): number {
+  const fontSize = cell.style?.fontSize ?? 14;
+  const lineHeight = fontSize * 1.4;
+  const charsPerLine = Math.max(10, Math.floor(100 / (fontSize * 0.6)));
+  const lines = Math.ceil((cell.content.plainText.length || 1) / charsPerLine);
+  let height = Math.max(40, lines * lineHeight + 16);
+
+  // Account for images
+  const imageScale = cell.style?.imageScale ?? 1;
+  if (cell.content.images && cell.content.images.length > 0) {
+    const imgHeight = cell.content.images.reduce(
+      (sum, img) => sum + Math.min(img.height * imageScale, 120),
+      0
+    );
+    height += imgHeight;
+  }
+
+  return height;
 }
 
 export function computeRingThickness(ring: Ring): number {
@@ -89,8 +104,8 @@ export function computeRingGeometry(
         cell,
         ringIndex: ring.index,
         cellIndex: i,
-        startAngle: i * cellAngle - Math.PI / 2,
-        endAngle: (i + 1) * cellAngle - Math.PI / 2,
+        startAngle: i * cellAngle,
+        endAngle: (i + 1) * cellAngle,
         innerRadius: ring.index === 0 ? 0 : innerRadius,
         outerRadius,
       })),

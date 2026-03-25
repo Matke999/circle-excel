@@ -6,6 +6,85 @@ import { AlignmentControls } from '../toolbar/AlignmentControls';
 import { ImageInsert } from '../toolbar/ImageInsert';
 import { RingControls } from '../toolbar/RingControls';
 import { useExport } from '../../hooks/useExport';
+import { useSelectionStore } from '../../store/selectionStore';
+import { useDocumentStore } from '../../store/documentStore';
+
+function RotationControl() {
+  const selection = useSelectionStore((state) => state.selection);
+  const cell = useDocumentStore((state) => {
+    const { ringIndex, cellIndex } = selection;
+    if (ringIndex === null || cellIndex === null) return null;
+    return state.document.rings[ringIndex]?.cells[cellIndex] ?? null;
+  });
+  const updateCellStyle = useDocumentStore((state) => state.updateCellStyle);
+
+  const rotation = cell?.style.rotation ?? 0;
+
+  const setRotation = (value: number) => {
+    const { ringIndex, cellIndex } = selection;
+    if (ringIndex !== null && cellIndex !== null) {
+      updateCellStyle(ringIndex, cellIndex, { rotation: value });
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-1" title="Rotation">
+      <span className="text-xs text-gray-500">↻</span>
+      <input
+        type="number"
+        className="w-14 text-xs border rounded px-1 py-0.5 bg-white"
+        value={rotation}
+        min={-360}
+        max={360}
+        step={15}
+        onChange={(e) => setRotation(Number(e.target.value))}
+        disabled={!cell}
+        title="Rotation angle in degrees"
+      />
+      <span className="text-[10px] text-gray-400">°</span>
+    </div>
+  );
+}
+
+function ImageScaleControl() {
+  const selection = useSelectionStore((state) => state.selection);
+  const cell = useDocumentStore((state) => {
+    const { ringIndex, cellIndex } = selection;
+    if (ringIndex === null || cellIndex === null) return null;
+    return state.document.rings[ringIndex]?.cells[cellIndex] ?? null;
+  });
+  const updateCellStyle = useDocumentStore((state) => state.updateCellStyle);
+
+  const scale = cell?.style.imageScale ?? 1;
+  const hasImages = (cell?.content.images?.length ?? 0) > 0;
+
+  const setScale = (value: number) => {
+    const { ringIndex, cellIndex } = selection;
+    if (ringIndex !== null && cellIndex !== null) {
+      updateCellStyle(ringIndex, cellIndex, { imageScale: value });
+    }
+  };
+
+  if (!hasImages) return null;
+
+  return (
+    <div className="flex items-center gap-1" title="Image Scale">
+      <span className="text-xs text-gray-500">🖼</span>
+      <input
+        type="range"
+        className="w-16"
+        value={scale}
+        min={0.25}
+        max={3}
+        step={0.25}
+        onChange={(e) => setScale(Number(e.target.value))}
+        disabled={!cell}
+        title={`Image scale: ${Math.round(scale * 100)}%`}
+      />
+      <span className="text-[10px] text-gray-400">{Math.round(scale * 100)}%</span>
+    </div>
+  );
+}
 
 export function Toolbar() {
   const { exportAsPNG, exportAsPDF } = useExport();
@@ -20,7 +99,10 @@ export function Toolbar() {
       <div className="w-px h-6 bg-gray-300" />
       <AlignmentControls />
       <div className="w-px h-6 bg-gray-300" />
+      <RotationControl />
+      <div className="w-px h-6 bg-gray-300" />
       <ImageInsert />
+      <ImageScaleControl />
       <div className="w-px h-6 bg-gray-300" />
       <RingControls />
       <div className="w-px h-6 bg-gray-300" />

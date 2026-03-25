@@ -31,8 +31,9 @@ export function ImageInsert() {
         };
         const { ringIndex, cellIndex } = selection;
         if (ringIndex !== null && cellIndex !== null) {
+          const imageScale = cell.style.imageScale ?? 1;
           const newImages = [...(cell.content.images ?? []), attachment];
-          const imgHtml = `<img src="${dataUrl}" alt="${file.name}" style="max-width:100%;max-height:60px;" />`;
+          const imgHtml = `<img src="${dataUrl}" alt="${file.name}" style="max-width:100%;height:auto;transform:scale(${imageScale});" />`;
           updateCellContent(ringIndex, cellIndex, {
             images: newImages,
             html: (cell.content.html ?? '') + imgHtml,

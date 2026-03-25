@@ -34,6 +34,11 @@ function createEmptyCell(ringIndex: number, cellIndex: number): Cell {
       verticalAlign: 'middle',
       borderColor: '#e5e7eb',
       borderWidth: 1,
+      bold: false,
+      italic: false,
+      underline: false,
+      rotation: 0,
+      imageScale: 1,
     },
   };
 }

@@ -10,9 +10,9 @@ function createEmptyCell(ringIndex: number, cellIndex: number): Cell {
   if (ringIndex === 0) {
     side = 'center';
   } else if (cellIndex < halfCount) {
-    side = 'left';
-  } else {
     side = 'right';
+  } else {
+    side = 'left';
   }
 
   return {

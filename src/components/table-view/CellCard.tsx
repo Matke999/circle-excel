@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import type { Cell } from '../../types';
 import { CellEditor } from './CellEditor';
 import { useDocumentStore } from '../../store/documentStore';
@@ -41,7 +41,6 @@ export function CellCard({ cell, compact = false }: CellCardProps) {
   const minWidth = compact ? 80 : 120;
   const minHeight = compact ? 50 : 80;
   const rotation = cell.style.rotation ?? 0;
-  const imageScale = cell.style.imageScale ?? 1;
 
   return (
     <div
@@ -95,7 +94,6 @@ export function CellCard({ cell, compact = false }: CellCardProps) {
             <div
               dangerouslySetInnerHTML={{ __html: cell.content.html }}
               className="text-sm"
-              style={imageScale !== 1 ? { '--image-scale': imageScale } as React.CSSProperties : undefined}
             />
           ) : (
             <span className="text-gray-400 text-xs">Double-click to edit</span>

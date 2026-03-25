@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useSelectionStore } from '../../store/selectionStore';
 import { useDocumentStore } from '../../store/documentStore';
 
@@ -50,6 +50,16 @@ export function ColorPicker() {
     }
   };
 
+  const handleToggleBgPresets = useCallback(() => {
+    setShowBgPresets((prev) => !prev);
+    setShowTextPresets(false);
+  }, []);
+
+  const handleToggleTextPresets = useCallback(() => {
+    setShowTextPresets((prev) => !prev);
+    setShowBgPresets(false);
+  }, []);
+
   return (
     <div className="flex items-center gap-1">
       <div className="relative flex items-center gap-0.5" title="Background Color">
@@ -70,7 +80,7 @@ export function ColorPicker() {
         </div>
         <button
           className="w-5 h-5 flex items-center justify-center rounded border border-gray-300 text-[10px] hover:bg-gray-100"
-          onClick={() => { setShowBgPresets(!showBgPresets); setShowTextPresets(false); }}
+          onClick={handleToggleBgPresets}
           disabled={!cell}
           title="Background color presets"
         >
@@ -108,7 +118,7 @@ export function ColorPicker() {
         </div>
         <button
           className="w-5 h-5 flex items-center justify-center rounded border border-gray-300 text-[10px] hover:bg-gray-100"
-          onClick={() => { setShowTextPresets(!showTextPresets); setShowBgPresets(false); }}
+          onClick={handleToggleTextPresets}
           disabled={!cell}
           title="Text color presets"
         >
